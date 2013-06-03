@@ -522,6 +522,7 @@ class Roo::GenericSpreadsheet
     new_expression = {
       '.ods' => 'Roo::Openoffice.new',
       '.xls' => 'Roo::Excel.new',
+      '.xlsm' => 'Roo::Excelx.new',
       '.xlsx' => 'Roo::Excelx.new',
       '.csv' => 'Roo::Csv.new',
       '.xml' => 'Roo::Excel2003XML.new',
@@ -533,7 +534,7 @@ class Roo::GenericSpreadsheet
 	    filename = File.basename(filename,File.extname(filename))
     end
     case ext
-    when '.ods', '.xls', '.xlsx', '.csv', '.xml'
+    when '.ods', '.xls', '.xlsm', '.xlsx', '.csv', '.xml'
       correct_class = "use #{new_expression[ext]} to handle #{ext} spreadsheet files. This has #{File.extname(filename).downcase}"
     else
       raise "unknown file type: #{ext}"
@@ -542,6 +543,7 @@ class Roo::GenericSpreadsheet
     if uri?(filename) && qs_begin = filename.rindex('?')
       filename = filename[0..qs_begin-1]
     end
+
     if File.extname(filename).downcase != ext
       case warning_level
       when :error
